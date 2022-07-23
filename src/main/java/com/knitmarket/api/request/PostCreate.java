@@ -9,10 +9,10 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class PostCreate {
 
-    @NotBlank
+    @NotBlank(message ="타이틀을 입력해주세요.")
     public String title;
 
-    @NotBlank
+    @NotBlank(message ="콘텐츠를 입력해주세요.")
     public String content;
 
 

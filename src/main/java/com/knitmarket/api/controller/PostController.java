@@ -1,6 +1,9 @@
 package com.knitmarket.api.controller;
 
+import com.knitmarket.api.domain.Post;
 import com.knitmarket.api.request.PostCreate;
+import com.knitmarket.api.service.PostService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -15,25 +18,28 @@ import java.util.Map;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class PostController {
 
-
+    private final PostService postService;
 
     @PostMapping("/posts")
-    public Map<String,String> post(@RequestBody @Valid PostCreate params, BindingResult result){
-
-        if(result.hasErrors()){
-            List<FieldError> fieldErrors = result.getFieldErrors();
-            FieldError firstFieldError = fieldErrors.get(0);
-            String fieldName = firstFieldError.getField(); //title
-            String errorMessage = firstFieldError.getDefaultMessage(); //..에러메세지
-
-            Map<String,String> error = new HashMap<>();
-            error.put(fieldName,errorMessage);
-            return error;
-
-        }
-        return Map.of();
+    public void post(@RequestBody @Valid PostCreate request){
+        postService.write(request);
     }
+
+
+    //글 조회
+    //posts => 글 전체 조회(검색 + 페이징)
+    //posts/{postId} => 글 한개만 조회
+
+    @GetMapping("/posts/{postId}")
+    public Post get(@PathVariable(name= "postId") Long id){
+       Post post = postService.get(id);
+       return post;
+    }
+
+
+
 
 }

@@ -1,5 +1,6 @@
 package com.knitmarket.api.request;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
@@ -15,5 +16,10 @@ public class PostCreate {
     @NotBlank(message ="콘텐츠를 입력해주세요.")
     public String content;
 
+    @Builder
+    public PostCreate(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 
 }
